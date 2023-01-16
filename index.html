@@ -9,21 +9,30 @@
 <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    const root = document.getElementById("root");
-
     function App() {
-        const [counter, setCounter] = React.useState(0);
-        const onClick = () => {
-            // setCounter(counter + 1);
-            setCounter((current) => current + 1); // current : argument, 현재 state 기반으로 계산하고 싶다면 함수 이용
+        const [minutes, setMinutes] = React.useState()
+        const onChange = (event) => {
+            setMinutes(event.target.value)
         }
+
         return(
             <div>
-                <h3>Total Click : {counter}</h3>
-                <button onClick={onClick}>Click me</button>
+                <h1>Super Converter</h1>
+                <label htmlFor="minutes">Minutes</label>
+                <input
+                    vlaue={minutes} 
+                    id="minutes"
+                    placeholder="Minutes"
+                    type="number"
+                    onChange={onChange}
+                />
+                <label htmlFor="hours">Hours</label>
+                <h4>You want to covnert {minutes}</h4>
+                <input placeholder="Hours" type="number"/>
             </div>
         );
     };
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
 </script>
 </html>
