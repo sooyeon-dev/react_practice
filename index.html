@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 </head>
 <body>
@@ -9,117 +9,34 @@
 <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    function MinutesToHours() { // 컴포넌트
-        const [amount, setAmount] = React.useState(0)
-        const [inverted, setInverted] = React.useState(false);
 
-        const onChange = (event) => {
-            setAmount(event.target.value)
-        }
-
-        const reset = () => setAmount(0);
-        const onInvert = () => {
-            reset();
-            setInverted((current) => !current);
-        }
-        return(
-            <div>
-                <div>
-                    <label htmlFor="minutes">Minutes</label>
-                    <input
-                        value={inverted ? amount * 60 : amount} 
-                        id="minutes"
-                        placeholder="Minutes"
-                        type="number"
-                        onChange={onChange}
-                        disabled={inverted === true}
-                    /> 
-                </div>
-                <div>
-                    <label htmlFor="hours">Hours</label>
-                    <input
-                        value={inverted ? amount : Math.round(amount / 60)} 
-                        id="hours"
-                        placeholder="Hours"
-                        type="number"
-                        disabled={inverted === false}
-                        onChange={onChange}
-                    /> 
-                </div>
-                <div>
-                    <button onClick={reset}>Reset</button>
-                    <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
-                </div>
-                {/* <h4>You want to covnert {minutes}</h4> */}
-            </div>
-        );
+    function Btn({text, changeValue}) {
+        return <button 
+            onClick={changeValue}
+            style={{
+                backgroundColor: "tomato",
+                color: "white",
+                padding: "10px 20px",
+                border: 0,
+                borderRadius: 10,
+            }}>
+            {text}
+        </button>        
     }
 
-    function KmToMiles() {
-        const [ distance, setDistance ] = React.useState(0);
-        const [ inverted, setInverted ] = React.useState(false);
-
-        const onChange = (event) => {
-            setDistance(event.target.value);
-        }
-
-        const reset = () => { setDistance(0) }
-        const invert = () => {
-            reset();
-            setInverted((current) => !current);   
-        }
-
-        return (
-            <div>
-                <h1>KM to Miles</h1>
-                <div>
-                    <input 
-                        type="number"
-                        id="km"
-                        value={inverted ? Math.round(distance * 1.609) : distance}
-                        onChange={onChange}
-                        disabled={inverted === true}
-                    />
-                    <label htmlFor="km">KM</label>
-                </div>
-                <div>
-                    <input
-                        type="number"
-                        id="miles"
-                        value={inverted ? distance : Math.round(distance / 1.609)}
-                        onChange={onChange}
-                        disabled={inverted === false}
-                    />
-                    <label htmlFor="miles">Miles</label>
-                </div>
-                <div>
-                    <button onClick={reset}>reset</button>
-                    <button onClick={invert}>Invert</button>
-                </div>
-            </div>
-        )
-    }
+    const MemorizedBtn = React.memo(Btn)
 
     function App() { // 컴포넌트
-        const [index, setIndex] = React.useState("0");
-        const onSelect = (event) => {
-            setIndex(event.target.value);
-        }
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Change");
         return(
             <div>
-                <div>
-                    <h1>Super Converter</h1>    
-                    <select value={index} onChange={onSelect}>
-                        <option value="0">Minutes & Hours</option>    
-                        <option value="1">Km & Miles</option>        
-                    </select>
-                    <hr />
-                    {index === "0" ? <MinutesToHours /> : null}
-                    {index === "1" ? <KmToMiles /> : null}
-                </div>
+                <MemorizedBtn text={value} changeValue={changeValue}/> {/* onClick을 custom component에 넣어도 이벤트 리스너 아님, 단지 prop */}
+                <MemorizedBtn text="Continue"/>
             </div>
         );
     };
+
     const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
 </script>
