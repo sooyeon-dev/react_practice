@@ -8,9 +8,10 @@
 <script src="https://unpkg.com/react@17.0.2/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
 <script type="text/babel">
 
-    function Btn({text, changeValue}) {
+    function Btn({text, changeValue, fontSize = 16}) {
         return <button 
             onClick={changeValue}
             style={{
@@ -19,6 +20,7 @@
                 padding: "10px 20px",
                 border: 0,
                 borderRadius: 10,
+                fontSize: fontSize
             }}>
             {text}
         </button>        
@@ -26,12 +28,16 @@
 
     const MemorizedBtn = React.memo(Btn)
 
+    Btn.propTypes = {
+        text: PropTypes.string.isRequired,
+        fontSize: PropTypes.number,
+    }
     function App() { // 컴포넌트
         const [value, setValue] = React.useState("Save Changes");
         const changeValue = () => setValue("Revert Change");
         return(
             <div>
-                <MemorizedBtn text={value} changeValue={changeValue}/> {/* onClick을 custom component에 넣어도 이벤트 리스너 아님, 단지 prop */}
+                <MemorizedBtn text={value} changeValue={changeValue} fontSize={18}/> {/* onClick을 custom component에 넣어도 이벤트 리스너 아님, 단지 prop */}
                 <MemorizedBtn text="Continue"/>
             </div>
         );
