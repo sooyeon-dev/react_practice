@@ -15,7 +15,10 @@ function Detail() {
        getMovie();
     }, [])
     return (
-        <h1>Detail</h1>
+        <div>
+            <h1>Detail</h1>
+            <p>blah</p>
+        </div>
     );
 }
 
